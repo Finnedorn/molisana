@@ -10,4 +10,6 @@ $fa-font-path: "../webfonts" !default;
 
 @import '~bootstrap/scss/bootstrap';
 
-
+main {
+    background-image: url(../img/backpage.jpg);
+}

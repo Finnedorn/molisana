@@ -3,10 +3,17 @@
 @section('title', 'Home')
 
 @section('content')
-    <main>
-        <h1>
-            Home Page
-            <i class="fa fa-home"></i>
-        </h1>
-    </main>
+<main>
+    <section class="container">
+        <h1>La Molisana </h1>
+        <div class="row gy-4">
+          <div class="col">
+            Qui andranno carosello  - hero - most popular - commenti
+          </div>
+        </div>
+
+    </section>
+
+</main>
+
 @endsection
