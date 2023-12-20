@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+//essendo arr first una classe di laravel bisogna prima importarla per usarla
+use Illuminate\Support\Arr;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,5 +49,56 @@ Route::get('/products/{id}', function ($id) {
 
 Route::get('/recipes', function () {
     $recipes = config('db.recipes');
-    return view('recipes.index', compact('products'));
+    return view('recipes.index', compact('recipes'));
 })->name('recipes.index');
+
+//rotta per mostrare la singola pagina di dettaglio di ciascuna card
+//a questa url aggiungerò un parametro che in questo caso è l'id del prodotto singolo
+//mettendo le graffe io gli sto dicendo ti passo qualcosa che è dinamico
+//mi prendo tutti i prodotti
+
+Route::get('/recipes/{id}', function ($id) {
+    $recipes = config('db.recipes');
+
+    //il metodo arr::first mi permette di restituire true o false se il valore supera un test assegnato all'interno
+    //gli serve un parametro array ovvero $recipes ed in questo caso necessita dell'id che ho inserito come use ($id)
+    //in questo caso gli sto dicendo return recipe come true se il valore inserito con key idmeal corrisponde all'id
+    //se è true allora parte il meccanismo dell'if
+
+    $recipe = Arr::first($recipes, function ($value,$key) use ($id) {
+        return $value['idMeal'] == $id;
+    });
+    if($recipe) {
+        return view('recipes.show', compact('recipe'));
+    } else {
+        abort(404);
+    }
+
+
+
+    //if = se l'id è maggiore di 0 e minore del valore massimo dell'array associativo in products
+    //(funzione count che mi restituisce il valore numerico di quanti elementi ho in un array o oggetto contabile)
+    //allora avrò una variabile product con valore tale id e inoltre portami alla pagina del relativo id
+    //altrimenti ritorna una pagina di error 404 oggetto non trovato
+
+
+
+    // $recipe = null;
+
+    // // foreach ($recipes as $item) {
+    // //     if($item["idMeal"] == $id ) {
+    // //         $recipe = $item;
+    // //     }
+    // // }
+    // // if ($recipe) {
+    // //     return view('recipes.show', compact('item'));
+    // // } else {
+    // //     abort(404);
+    // // }
+})->name('recipes.show');
+
+
+//ecco come impostare una fall back route ovvero
+Route::fallback(function () {
+    return redirect()->route('home');
+});
