@@ -23,9 +23,16 @@ Route::get('/', function () {
 
 //rotta per vedere tutti i prodotti nelle cards, passiamo nella index produtcs
 Route::get('/products', function () {
+    // la funzione config('nomedelfilephpdentroallacartella.nomearrayspecifico') mi permette
+    // di esportare direttamente il file dentro alla pagina
+    //così da poterne sfruttare gli array associativi all'interno
     $products = config('db.pasta');
     //voglio vedere l'array?
     //dd($products);
+    //tramite config ho linkato i contenuti del file contenente gli array alla pagina
+    //purtroppo però questo non basta, infatti per comunicare al sistema che ciò che sto esportando
+    // non è solo una var collegata ad un elemento di un file ma un array associativo dovrò
+    //usare la funzione compact che trasforma la variabile in un array associativo
     return view('products.index', compact('products'));
 })->name('products.index');
 
